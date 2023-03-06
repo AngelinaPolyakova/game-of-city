@@ -1,0 +1,10 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#field {
+  margin-bottom: 10px;
+}/*# sourceMappingURL=style.css.map */
