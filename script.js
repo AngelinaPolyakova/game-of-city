@@ -4,6 +4,7 @@ let alarmWrapper = document.querySelector('.alarm-container');
 let citiesWrapper = document.querySelector('.cities-container');
 
 let cities = [];
+let flag = false;
 
 function addCity(city) {
     let newCity = document.createElement('p');
@@ -12,20 +13,14 @@ function addCity(city) {
 }
 
 function checkInCities(city) {
-
     if (cities.includes(city)) {
-        let alarm = document.createElement('div');
-        alarm.innerHTML = 'Этот город уже был!';
-        message.innerHTML = '';
-        alarmWrapper.append(alarm);
-        /* cities.pop(); */
-        
+        message.innerHTML = 'Этот город уже был!';
+        flag = false;
     } else {
-        addCity(city);
+        flag = true;
     }
+    return flag;
 }
-
-
 
 function checkLetter(city) {
     let lastCity = cities[cities.length - 1].toUpperCase();
@@ -33,46 +28,40 @@ function checkLetter(city) {
 
     if (lastCity.endsWith('Ь') || lastCity.endsWith('Ъ') || lastCity.endsWith('Ы')) {
         lastLetter = lastCity[lastCity.length - 2];
-     
     } else {
         lastLetter = lastCity[lastCity.length - 1];
     }
-    /* message.innerHTML = 'Введите город на букву ' + lastLetter; */
 
     if (lastLetter == city.slice(0,1)) {
-        cities.push(city);
         field.value = '';
-        /* addCity(nameBig); */
-        console.log(cities);
         message.innerHTML = '';
-        
+        flag = true;
     } else {
         field.value = '';
         message.innerHTML = 'Неверно, введите город на букву ' + lastLetter;
+        flag = false;
     }
+
+    return flag;
 }
 
-
-
-
 field.addEventListener('keyup', function(e) {
-
+    let nameBig = field.value.toUpperCase();
     if (e.keyCode === 13) {
         if (!cities[0]) {
-            let nameBig = field.value.toUpperCase();
             cities.push(nameBig);
             field.value = '';
             addCity(nameBig);
-            console.log(cities);
         } else {
-            nameBig = field.value.toUpperCase();
-
-            checkInCities(nameBig);
-            checkLetter(nameBig);
+            if ((checkInCities(nameBig)) && (checkLetter(nameBig))) {
+                addCity(nameBig);
+                cities.push(nameBig);
+            } 
         }
-        
     }
+    
 })
+
 
 
 
